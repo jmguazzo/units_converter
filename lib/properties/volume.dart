@@ -10,6 +10,7 @@ enum VOLUME {
   imperialGallons,
   usGallons,
   imperialPints,
+  imperialQuarts,
   usPints,
   milliliters,
   tablespoonsUs,
@@ -52,6 +53,7 @@ class Volume extends DoubleProperty<VOLUME> {
             VOLUME.imperialGallons: 'imp gal',
             VOLUME.usGallons: 'US gal',
             VOLUME.imperialPints: 'imp pt',
+            VOLUME.imperialQuarts: 'imp qt',
             VOLUME.usPints: 'US pt',
             VOLUME.milliliters: 'ml',
             VOLUME.tablespoonsUs: 'tbsp.',
@@ -73,11 +75,11 @@ class Volume extends DoubleProperty<VOLUME> {
             VOLUME.deciliters: 'dl',
             VOLUME.centiliters: 'cl',
           },
-          conversionTree: ConversionNode(name: VOLUME.cubicMeters, leafNodes: [
+          conversionTree: ConversionNode(name: VOLUME.cubicMeters, children: [
             ConversionNode(
                 coefficientProduct: 1e-3,
                 name: VOLUME.liters,
-                leafNodes: [
+                children: [
                   ConversionNode(
                     coefficientProduct: 4.54609,
                     name: VOLUME.imperialGallons,
@@ -89,11 +91,15 @@ class Volume extends DoubleProperty<VOLUME> {
                   ConversionNode(
                     coefficientProduct: 0.56826125,
                     name: VOLUME.imperialPints,
-                    leafNodes: [
+                    children: [
+                      ConversionNode(
+                        coefficientProduct: 2,
+                        name: VOLUME.imperialQuarts,
+                      ),
                       ConversionNode(
                         coefficientProduct: 1 / 20,
                         name: VOLUME.imperialFluidOunces,
-                        leafNodes: [
+                        children: [
                           ConversionNode(
                               coefficientProduct: 5, name: VOLUME.imperialGill),
                         ],
@@ -103,11 +109,11 @@ class Volume extends DoubleProperty<VOLUME> {
                   ConversionNode(
                     coefficientProduct: 0.473176473,
                     name: VOLUME.usPints,
-                    leafNodes: [
+                    children: [
                       ConversionNode(
                         coefficientProduct: 1 / 16,
                         name: VOLUME.usFluidOunces,
-                        leafNodes: [
+                        children: [
                           ConversionNode(
                             coefficientProduct: 4,
                             name: VOLUME.usGill,
@@ -123,7 +129,7 @@ class Volume extends DoubleProperty<VOLUME> {
                   ConversionNode(
                       coefficientProduct: 1e-3,
                       name: VOLUME.milliliters,
-                      leafNodes: [
+                      children: [
                         ConversionNode(
                           coefficientProduct: 14.8,
                           name: VOLUME.tablespoonsUs,
@@ -165,11 +171,11 @@ class Volume extends DoubleProperty<VOLUME> {
             ConversionNode(
                 coefficientProduct: 1e-6,
                 name: VOLUME.cubicCentimeters,
-                leafNodes: [
+                children: [
                   ConversionNode(
                       coefficientProduct: 16.387064,
                       name: VOLUME.cubicInches,
-                      leafNodes: [
+                      children: [
                         ConversionNode(
                           coefficientProduct: 1728.0,
                           name: VOLUME.cubicFeet,
@@ -188,6 +194,7 @@ class Volume extends DoubleProperty<VOLUME> {
   Unit get imperialGallons => getUnit(VOLUME.imperialGallons);
   Unit get usGallons => getUnit(VOLUME.usGallons);
   Unit get imperialPints => getUnit(VOLUME.imperialPints);
+  Unit get imperialQuarts => getUnit(VOLUME.imperialQuarts);
   Unit get usPints => getUnit(VOLUME.usPints);
   Unit get milliliters => getUnit(VOLUME.milliliters);
   Unit get tablespoonsUs => getUnit(VOLUME.tablespoonsUs);

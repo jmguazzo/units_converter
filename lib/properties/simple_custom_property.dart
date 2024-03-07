@@ -39,7 +39,7 @@ class SimpleCustomProperty extends DoubleProperty<String> {
       {super.significantFigures,
       super.removeTrailingZeros,
       super.useScientificNotation,
-      Map<String, String>? mapSymbols,
+      super.mapSymbols,
       name})
       : assert(mapConversion.containsValue(1),
             'One conversion coefficient must be 1, this will considered the base unit'),
@@ -56,7 +56,6 @@ class SimpleCustomProperty extends DoubleProperty<String> {
             'mapSymbols should be null or containing all the keys of mapConversion'),
         super(
           name: name ?? 'SimpleCustomProperty',
-          mapSymbols: mapSymbols,
           conversionTree: _convertMapToConversionTree(mapConversion),
         );
 }
@@ -65,12 +64,12 @@ ConversionNode<String> _convertMapToConversionTree(
     Map<String, double> mapConversion) {
   var baseUnit = mapConversion.keys.firstWhere(
       (element) => mapConversion[element] == 1); //take the base unit
-  List<ConversionNode<String>> leafNodes = [];
+  List<ConversionNode<String>> children = [];
   mapConversion.forEach((key, value) {
     if (key != baseUnit) {
       //I'm just interested in the relationship between the base unit and the other units
-      leafNodes.add(ConversionNode(name: key, coefficientProduct: 1 / value));
+      children.add(ConversionNode(name: key, coefficientProduct: 1 / value));
     }
   });
-  return ConversionNode(name: baseUnit, leafNodes: leafNodes);
+  return ConversionNode(name: baseUnit, children: children);
 }
